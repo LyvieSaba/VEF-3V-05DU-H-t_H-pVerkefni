@@ -14,3 +14,7 @@ Our web app lets people search for and learn many different card games. You can 
 6. I am a user who wants to know what card games are similar to the one's I like
 7. I am a admin who wants to see the user experience to improve the website
 8. I am a user who wants to organize the card games in categories so I can find them easier
+
+
+### Mockup
+![Local Image](Frumgerd.png "Local Image Title")
