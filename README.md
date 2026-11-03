@@ -1,7 +1,7 @@
 # VEF-3V-05DU-H-t_HopVerkefni
 
 
-##user stories:
+### user stories:
 
 1. I am a user who wants to learn how to play Go Fish
 2. I am a user who wants to learn how to play Solitaire
