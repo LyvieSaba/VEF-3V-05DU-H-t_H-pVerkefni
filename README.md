@@ -9,3 +9,4 @@
 4. I am a user who wants to find what card games I can play with my family
 5. I am a user who wants to find what card games I can play with my friends
 6. I am a user who wants to know what card games are similar to the one's I like
+7. I am a admin who wants to see the user experience to improve the website
