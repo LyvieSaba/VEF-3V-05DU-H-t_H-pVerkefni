@@ -20,4 +20,6 @@ Our web app lets people search for and learn many different card games. You can 
 
 
 ### Mockup
+### Heima Síða
+https://www.figma.com/make/DA2NwnzaA0WOoVwDhvay0K/Card-Game-Finder-Homepage?t=sB5StYNy4v2nHYLh-1
 ![Local Image](Frumgerd.png "Local Image Title")
