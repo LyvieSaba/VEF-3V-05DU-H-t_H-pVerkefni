@@ -27,9 +27,11 @@ The problem we want to solve is that most people only know a few games and end u
 **Rule checker**
 6. As a player in the middle of a game, I want to quickly look up a specific rule so that we can settle arguments, like whether my sister cheated in Ólsen ólsen.
 
-
+### Wireframe
+![Local Image](Wireflow.png "Local Image Title")
+![Local Image](WireFlow_Mynd.png "Local Image Title")
 
 ### Mockup
-### Heima Síða
+#### Heima Síða
 https://www.figma.com/make/DA2NwnzaA0WOoVwDhvay0K/Card-Game-Finder-Homepage?t=sB5StYNy4v2nHYLh-1
 ![Local Image](Frumgerd.png "Local Image Title")
