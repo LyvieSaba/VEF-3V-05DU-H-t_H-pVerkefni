@@ -1,6 +1,6 @@
 # VEF-3V-05DU-H-t_HopVerkefni
 
-## libraries we MIGHT use
+## Frame Work 
 flask + python
 
 ### About
@@ -11,14 +11,22 @@ The problem we want to solve is that most people only know a few games and end u
 
 ### user stories:
 
-1. I am a user who wants to learn how to play Go Fish
-2. I am a user who wants to learn how to play Solitaire
-3. I am a user who wants to find out if my sister cheated in Ólsen Ólsen
-4. I am a user who wants to find what card games I can play with my family
-5. I am a user who wants to find what card games I can play with my friends
-6. I am a user who wants to know what card games are similar to the one's I like
-7. I am a admin who wants to see the user experience to improve the website
-8. I am a user who wants to organize the card games in categories so I can find them easier
+**Beginner**
+1. As a beginner, I want to read step-by-step rules with examples so that I can learn a new game like Go Fish or Solitaire without anyone teaching me.
+
+**Parent / family**
+2. As a parent, I want to filter games by age and number of players so that I can find a game the whole family can play together.
+
+**Friend group**
+3. As someone hanging out with friends, I want to filter by number of players and play time so that we can quickly find a game that fits our group and the time we have.
+
+**Experienced player**
+4. As an experienced player, I want to see games similar to the ones I already like so that I can find new games I'll enjoy.
+5. As an experienced player, I want to browse games by category so that I can find the type of game I'm in the mood for.
+
+**Rule checker**
+6. As a player in the middle of a game, I want to quickly look up a specific rule so that we can settle arguments, like whether my sister cheated in Ólsen ólsen.
+
 
 
 ### Mockup
