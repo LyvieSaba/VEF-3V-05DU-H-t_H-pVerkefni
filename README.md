@@ -29,7 +29,7 @@ The problem we want to solve is that most people only know a few games and end u
 
 ### Wireframe
 ![Local Image](Wireflow.png "Local Image Title")
-![Local Image](WireflowMynd.jpg "Local Image Title")
+![Local Image](WireframeMynd.jpg "Local Image Title")
 
 ### Mockup
 #### Heima Síða
