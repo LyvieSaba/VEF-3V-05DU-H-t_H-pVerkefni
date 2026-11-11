@@ -28,10 +28,10 @@ The problem we want to solve is that most people only know a few games and end u
 6. As a player in the middle of a game, I want to quickly look up a specific rule so that we can settle arguments, like whether my sister cheated in Ólsen ólsen.
 
 ### Wireframe
-![Local Image](Wireflow.png "Local Image Title")
-![Local Image](WireframeMynd.jpg "Local Image Title")
+![Local Image](documentation/Wireflow.png "Local Image Title")
+![Local Image](documentation/WireframeMynd.jpg "Local Image Title")
 
 ### Mockup
 #### Heima Síða
 https://www.figma.com/make/DA2NwnzaA0WOoVwDhvay0K/Card-Game-Finder-Homepage?t=sB5StYNy4v2nHYLh-1
-![Local Image](Frumgerd.png "Local Image Title")
+![Local Image](documentation/Frumgerd.png "Local Image Title")
