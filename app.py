@@ -22,3 +22,15 @@ def create_game():
     db.session.add(game)
     db.session.commit()
     return {"message": "Leikur búinn til", "id": game.id}
+@app.route('/api/join-game', methods=['POST'])
+def join_game():
+    data = request.get_json() or {}
+    gp = GamePlayer(
+        game_id=data.get('game_id'),
+        player_id=data.get('player_id'),
+        seat=data.get('seat', 1),
+        chips=1000
+    )
+    db.session.add(gp)
+    db.session.commit()
+    return {"message": "Leikmaður bætt við leik"}
