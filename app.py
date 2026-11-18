@@ -1,5 +1,4 @@
-from flask import Flask, request, abort, render_template
-
+from flask import Flask, request, abort, render_template, redirect, url_for
 from games import library
 
 app = Flask(__name__)
@@ -28,6 +27,13 @@ def games(game_id):
     if found is None:
         abort(404)
     return render_template("example.html", games=found)
+
+
+@app.route("/handahof")
+def random_game():
+    # Picks a random game and sends the user to its page
+    picked = library.random_game()
+    return redirect(url_for("games", game_id=picked.id))
 
 
 if __name__ == "__main__":
