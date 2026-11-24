@@ -1,79 +1,44 @@
-from flask import Flask, jsonify, request, abort, render_template
- 
+from flask import Flask, request, abort, render_template, redirect, url_for, jsonify
+
+from games import library
+
 app = Flask(__name__)
-app.json.ensure_ascii = False  
- 
-# Sample games until the real database is ready.
-GAMES = [
-    {"id": 1, "name": "Ólsen ólsen", "min_players": 2, "max_players": 6, "minutes": 15},
-    {"id": 2, "name": "Kani", "min_players": 2, "max_players": 4, "minutes": 10},
-    {"id": 3, "name": "Rommí", "min_players": 2, "max_players": 6, "minutes": 45},
-    {"id": 4, "name": "Kapall", "min_players": 1, "max_players": 1, "minutes": 10},
-]
- 
- 
-def find_games(text="", players=None, max_minutes=None):
-    """Return the games that match the search text and filters."""
-    results = []
-    for game in GAMES:
-        if text and text.lower() not in game["name"].lower():
-            continue
-        if players is not None and not (game["min_players"] <= players <= game["max_players"]):
-            continue
-        if max_minutes is not None and game["minutes"] > max_minutes:
-            continue
-        results.append(game)
-    return results
- 
- 
+app.json.ensure_ascii = False  # show Icelandic letters properly
+
+
 @app.route("/")
 def index():
-    # Shows templates/example.html
-    return render_template("example.html")
- 
- 
+    # The home page our HTML/CSS teammates made
+    return render_template("base.html")
+
+
 @app.route("/leit")
 def search():
     # Example: /leit?q=kan&players=3&time=20
+    # Returns JSON until the HTML team makes templates/leit.html
     text = request.args.get("q", "")
     players = request.args.get("players", type=int)
     max_minutes = request.args.get("time", type=int)
-    return jsonify(find_games(text, players, max_minutes))
- 
- 
+    games = library.search(text, players, max_minutes)
+    return jsonify([game.to_dict() for game in games])
+
+
 @app.route("/spil/<int:game_id>")
-def game(game_id):
-    for g in GAMES:
-        if g["id"] == game_id:
-            return jsonify(g)
-    abort(404)
- 
- 
+def game_page(game_id):
+    # Example: /spil/1 shows the game with id 1
+    # Returns JSON until the HTML team makes templates/spil.html
+    found = library.get(game_id)
+    if found is None:
+        abort(404)
+    return jsonify(found.to_dict())
+
+
+@app.route("/handahof")
+def random_game():
+    # Picks a random game and sends the user to its page
+    picked = library.random_game()
+    return redirect(url_for("game_page", game_id=picked.id))
+
+
 if __name__ == "__main__":
     app.run(debug=True)
-    @app.route('/api/games')
-def get_games():
-    games = Game.query.all()
-    return [{"id": g.id, "name": g.name, "status": g.status} for g in games]
-@app.route('/api/create-game', methods=['POST'])
-def create_game():
-    data = request.get_json() or {}
-    game = Game(
-        name=data.get('name', 'Nýr leikur'),
-        game_type=data.get('game_type', 'poker')
-    )
-    db.session.add(game)
-    db.session.commit()
-    return {"message": "Leikur búinn til", "id": game.id}
-@app.route('/api/join-game', methods=['POST'])
-def join_game():
-    data = request.get_json() or {}
-    gp = GamePlayer(
-        game_id=data.get('game_id'),
-        player_id=data.get('player_id'),
-        seat=data.get('seat', 1),
-        chips=1000
-    )
-    db.session.add(gp)
-    db.session.commit()
-    return {"message": "Leikmaður bætt við leik"}
