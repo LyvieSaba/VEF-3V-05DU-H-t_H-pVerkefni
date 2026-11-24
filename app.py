@@ -1,39 +1,43 @@
-from flask import Flask, request, abort, render_template, redirect, url_for
+from flask import Flask, request, abort, render_template, redirect, url_for, jsonify
+
 from games import library
 
 app = Flask(__name__)
+app.json.ensure_ascii = False  # show Icelandic letters properly
 
 
 @app.route("/")
 def index():
-    # Shows the page your teammates made in templates/example.html
-    return render_template("example.html")
+    # The home page our HTML/CSS teammates made
+    return render_template("base.html")
 
 
 @app.route("/leit")
 def search():
     # Example: /leit?q=kan&players=3&time=20
+    # Returns JSON until the HTML team makes templates/leit.html
     text = request.args.get("q", "")
     players = request.args.get("players", type=int)
     max_minutes = request.args.get("time", type=int)
     games = library.search(text, players, max_minutes)
-    return render_template("leit.html", games=games, q=text, players=players, time=max_minutes)
+    return jsonify([game.to_dict() for game in games])
 
 
 @app.route("/spil/<int:game_id>")
-def games(game_id):
-    # Example: /spil/1 shows the games with id 1
+def game_page(game_id):
+    # Example: /spil/1 shows the game with id 1
+    # Returns JSON until the HTML team makes templates/spil.html
     found = library.get(game_id)
     if found is None:
         abort(404)
-    return render_template("example.html", games=found)
+    return jsonify(found.to_dict())
 
 
 @app.route("/handahof")
 def random_game():
     # Picks a random game and sends the user to its page
     picked = library.random_game()
-    return redirect(url_for("games", game_id=picked.id))
+    return redirect(url_for("game_page", game_id=picked.id))
 
 
 if __name__ == "__main__":
