@@ -77,3 +77,15 @@ def join_game():
     db.session.add(gp)
     db.session.commit()
     return {"message": "Leikmaður bætt við leik"}
+@app.route('/api/add-move', methods=['POST'])
+def add_move():
+    data = request.get_json() or {}
+    move = Move(
+        game_id=data.get('game_id'),
+        player_id=data.get('player_id'),
+        card=data.get('card'),
+        action=data.get('action', 'play')
+    )
+    db.session.add(move)
+    db.session.commit()
+    return {"message": "Hreyfing skráð", "card": move.card}
