@@ -2,13 +2,14 @@ import random
 
 class Game:
 
-    def __init__(self, id, name, min_players, max_players, minutes, rules):
+    def __init__(self, id, name, min_players, max_players, minutes, rules, category="Annað"):
         self.id = id
         self.name = name
         self.min_players = min_players
         self.max_players = max_players
         self.minutes = minutes
         self.rules = rules  # a list of steps, one string per step
+        self.category = category  # e.g. "Fjölskylduspil"
 
     def to_dict(self):
         """The game as a dictionary, so Flask can send it as JSON."""
@@ -19,19 +20,22 @@ class Game:
             "max_players": self.max_players,
             "minutes": self.minutes,
             "rules": self.rules,
+            "category": self.category,
         }
 
     def fits_players(self, players):
         """True if this many people can play the game."""
         return self.min_players <= players <= self.max_players
 
-    def matches(self, text="", players=None, max_minutes=None):
+    def matches(self, text="", players=None, max_minutes=None, category=None):
         """True if the game matches the search text and filters"""
         if text and text.lower() not in self.name.lower():
             return False
         if players is not None and not self.fits_players(players):
             return False
         if max_minutes is not None and self.minutes > max_minutes:
+            return False
+        if category and category.lower() != self.category.lower():
             return False
         return True
 
@@ -42,13 +46,13 @@ class GameLibrary:
     def __init__(self, games):
         self.games = games
 
-
-
-
-
-    def search(self, text="", players=None, max_minutes=None):
+    def search(self, text="", players=None, max_minutes=None, category=None):
         """Return a list of the games that match."""
-        return [game for game in self.games if game.matches(text, players, max_minutes)]
+        return [game for game in self.games if game.matches(text, players, max_minutes, category)]
+
+    def categories(self):
+        """Return every category name once, sorted A-Z."""
+        return sorted({game.category for game in self.games})
 
     def get(self, game_id):
         """Return the game with this id or None if it doesnt exist"""
@@ -62,7 +66,7 @@ class GameLibrary:
         return random.choice(self.games)
 
 
-# The starting games. They are copied into the database the first time the app runs.
+# Placeholder games until the database is ready
 SAMPLE_GAMES = [
     Game(1, "Ólsen ólsen", 2, 6, 15, [
         "Hver leikmaður fær 7 spil (5 ef þið eruð fleiri en 4).",
@@ -70,8 +74,8 @@ SAMPLE_GAMES = [
         "Settu út spil í sömu sort eða sama gildi og efsta spilið.",
         "Áttan má fara á allt og þá velur þú nýja sort.",
         "Segðu „Ólsen“ þegar þú átt eitt spil eftir og „Ólsen ólsen“ þegar þú klárar.",
-    ]),
-    Game(2, "Kani", 2, 4, 10, ["Reglur koma síðar."]),
+    ], "Fjölskylduspil"),
+    Game(2, "Kani", 2, 4, 10, ["Reglur koma síðar."], "Fjölskylduspil"),
     Game(3, "Rommí", 2, 6, 45, [
         "Hver leikmaður fær 7 spil (10 ef þið eruð bara 2).",
         "Eitt spil fer upp í loft í kastbunka, restin er dráttarbunki.",
@@ -80,7 +84,7 @@ SAMPLE_GAMES = [
         "Þú mátt líka bæta spilum við sett sem eru þegar á borðinu.",
         "Endaðu umferðina á því að kasta einu spili í kastbunkann.",
         "Sá sem losnar fyrst við öll spilin sín vinnur.",
-    ]),
+    ], "Herkænskuspil"),
     Game(4, "Kapall", 1, 1, 10, [
         "Leggðu 7 bunka á borðið: 1 spil í þann fyrsta, 2 í næsta og svo framvegis upp í 7. Efsta spilið í hverjum bunka snýr upp.",
         "Restin af spilunum er dráttarbunki.",
@@ -88,14 +92,14 @@ SAMPLE_GAMES = [
         "Á borðinu má setja spil á spil sem er einu hærra og í öðrum lit (t.d. rauða 6 á svarta 7).",
         "Aðeins kóngur má fara á autt pláss.",
         "Þegar þú kemst ekki lengra, dragðu spil úr bunkanum.",
-    ]),
+    ], "Einspil"),
     Game(5, "Svarti Pétur", 2, 6, 15, [
         "Takið eina laufadrottningu úr stokknum. Spaðadrottningin er Svarti Pétur.",
         "Gefið öll spilin. Leggið niður öll pör sem þið eigið.",
         "Í hverri umferð dregur þú eitt spil af hendi leikmannsins við hliðina á þér, án þess að sjá það.",
         "Ef þú færð par leggur þú það niður.",
         "Sá sem situr uppi með Svarta Pétur í lokin tapar.",
-    ]),
+    ], "Fjölskylduspil"),
     Game(6, "Veiðimaður", 2, 6, 15, [
         "Hver leikmaður fær 5 spil (7 ef þið eruð bara 2). Restin er bunki í miðjunni.",
         "Spyrðu einhvern um gildi sem þú átt sjálf/ur, t.d. „Áttu sjöu?“",
@@ -103,15 +107,15 @@ SAMPLE_GAMES = [
         "Ef ekki er sagt „Veiddu!“ og þú dregur spil úr bunkanum.",
         "Þegar þú átt öll fjögur spilin af einu gildi leggur þú þau niður.",
         "Sá sem á flest fjögurra spila sett í lokin vinnur.",
-    ]),
+    ], "Fjölskylduspil"),
     Game(7, "Stríð", 2, 2, 20, [
         "Skiptið stokknum jafnt á milli ykkar. Enginn má skoða spilin sín.",
         "Báðir snúa efsta spilinu sínu upp á sama tíma.",
         "Sá sem á hærra spil tekur bæði spilin og setur þau undir bunkann sinn.",
         "Ef spilin eru jafn há er stríð: hvor leggur 3 spil á hvolf og snýr því fjórða upp. Hærra spilið vinnur allt.",
         "Sá sem eignast öll spilin vinnur.",
-    ]),
+    ], "Fjölskylduspil"),
 ]
 
-# Used by the tests, and as a backup if there is no database
+# All the games, used by app.py and the tests
 library = GameLibrary(SAMPLE_GAMES)

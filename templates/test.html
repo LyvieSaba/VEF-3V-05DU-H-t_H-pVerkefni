@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/materialize.min.css') }}" media="screen,projection"/>
+ 
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+ 
+    <title>Spilasida (test)</title>
+  </head>
+ 
+  <body>
+    <!-- TEST COPY of base.html, so I can try the backend without touching my teammate's file -->
+ 
+    <nav>
+      <div class="nav-wrapper red darken-2">
+        <div class="container">
+          <a href="{{ url_for('test_page') }}" class="brand-logo">Spilasida</a>
+          <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('test_page') }}">All games</a></li>
+            <li><a href="{{ url_for('random_game') }}">Random game</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+ 
+    <div class="container">
+ 
+      <!-- Search bar: sends ?q=... back to this same page -->
+      <form action="{{ url_for('test_page') }}" method="get">
+        <div class="row">
+          <div class="input-field col s12 m6">
+            <input id="q" name="q" type="text" value="{{ request.args.get('q', '') }}">
+            <label for="q" class="active">Search for a game</label>
+          </div>
+          <div class="input-field col s6 m2">
+            <input id="players" name="players" type="number" min="1" value="{{ request.args.get('players', '') }}">
+            <label for="players" class="active">Players</label>
+          </div>
+          <div class="input-field col s6 m2">
+            <input id="time" name="time" type="number" min="1" value="{{ request.args.get('time', '') }}">
+            <label for="time" class="active">Max minutes</label>
+          </div>
+          <div class="input-field col s12 m2">
+            <button class="btn red darken-2" type="submit">Search</button>
+          </div>
+        </div>
+      </form>
+ 
+      <!-- Categories: one card for each category from games.py -->
+      <h2 class="red-text">Categories</h2>
+      <div class="row">
+        {% for category in categories %}
+        <div class="col s12 m4">
+          <a href="{{ url_for('test_page', flokkur=category) }}">
+            <div class="card-panel hoverable">
+              <h5 class="truncate section center-align">{{ category }}</h5>
+            </div>
+          </a>
+        </div>
+        {% endfor %}
+      </div>
+ 
+      <!-- Players: each card shows games for that many players -->
+      <h2 class="red-text">Players</h2>
+      <div class="divider"></div>
+      <div class="row">
+        {% for number in [1, 2, 3, 4] %}
+        <div class="col s6 m3">
+          <a href="{{ url_for('test_page', players=number) }}">
+            <div class="card-panel hoverable">
+              <h5 class="truncate section center-align">{{ number }} {{ "player" if number == 1 else "players" }}</h5>
+            </div>
+          </a>
+        </div>
+        {% endfor %}
+      </div>
+ 
+      <!-- Results: the games that match the search and filters -->
+      <h2 class="red-text">Games ({{ games|length }})</h2>
+      <div class="collection">
+        {% for game in games %}
+        <a href="{{ url_for('game_page', game_id=game.id) }}" class="collection-item">
+          <b>{{ game.name }}</b>
+          <span class="grey-text">
+            · {{ game.min_players }}–{{ game.max_players }} players · {{ game.minutes }} min · {{ game.category }}
+          </span>
+        </a>
+        {% else %}
+        <p class="collection-item">No games found.</p>
+        {% endfor %}
+      </div>
+ 
+    </div>
+ 
+    <!--JavaScript at end of body for optimized loading-->
+    <script type="text/javascript" src="{{ url_for('static', filename='js/materialize.min.js') }}"></script>
+  </body>
+</html>
+ 
