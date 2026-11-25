@@ -34,7 +34,7 @@ def index():
  
 @app.route("/leit")
 def search():
-    # Example: /leit?q=kan&players=3&time=20
+    # T.D: /leit?q=kan&players=3&time=20
     text = request.args.get("q", "")
     players = request.args.get("players", type=int)
     max_minutes = request.args.get("time", type=int)
