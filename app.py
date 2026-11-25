@@ -3,7 +3,7 @@ from flask import Flask, jsonify, request, abort, render_template
 app = Flask(__name__)
 app.json.ensure_ascii = False  
  
-# Sample games until the real database is ready.
+# Sýnidæmi af leikjum
 GAMES = [
     {"id": 1, "name": "Ólsen ólsen", "min_players": 2, "max_players": 6, "minutes": 15},
     {"id": 2, "name": "Kani", "min_players": 2, "max_players": 4, "minutes": 10},
