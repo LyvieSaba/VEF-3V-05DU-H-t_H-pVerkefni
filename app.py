@@ -28,7 +28,7 @@ def find_games(text="", players=None, max_minutes=None):
  
 @app.route("/")
 def index():
-    # Shows templates/example.html
+    
     return render_template("example.html")
  
  
