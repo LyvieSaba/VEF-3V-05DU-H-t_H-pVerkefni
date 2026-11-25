@@ -11,3 +11,13 @@ class Game(db.Model):
     name = db.Column(db.String(100), nullable=False)
     game_type = db.Column(db.String(50), nullable=False)
     status = db.Column(db.String(20), default='waiting')
+
+from datetime import datetime
+
+class Move(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    game_id = db.Column(db.Integer, db.ForeignKey('game.id'), nullable=False)
+    player_id = db.Column(db.Integer, db.ForeignKey('player.id'))
+    card = db.Column(db.String(20))          # e.g. "AS", "KH", "10D"
+    action = db.Column(db.String(50))        # e.g. "play", "draw", "discard"
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
